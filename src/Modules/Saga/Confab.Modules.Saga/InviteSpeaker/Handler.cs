@@ -3,7 +3,7 @@ using Chronicle;
 using Confab.Modules.Saga.Messages;
 using Confab.Shared.Abstractions.Events;
 
-namespace Confab.Modules.Saga
+namespace Confab.Modules.Saga.InviteSpeaker
 {
     internal class Handler : IEventHandler<SpeakerCreated>, IEventHandler<SignedUp>, IEventHandler<SignedIn>
     {

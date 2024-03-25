@@ -21,4 +21,10 @@
       <PackageReference Include="Chronicle_" Version="3.2.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="TicketDiscount\" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="TicketDiscount\" />
+    </ItemGroup>
 </Project>
