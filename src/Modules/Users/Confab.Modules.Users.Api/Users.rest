@@ -1,5 +1,5 @@
 @url = http://localhost:5000/users-module
-@email = user1@confab.io
+@email = notspeaker@confab.io
 @password = secret
 @role = user
 @accessToken = secret

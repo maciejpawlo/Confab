@@ -17,6 +17,10 @@
       <Content Include="module.conferences.development.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+      <None Remove="module.conference.test.json" />
+      <Content Include="module.conference.test.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>

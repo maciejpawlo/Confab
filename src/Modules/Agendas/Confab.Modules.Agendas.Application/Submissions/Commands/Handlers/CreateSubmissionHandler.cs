@@ -48,9 +48,9 @@ namespace Confab.Modules.Agendas.Application.Submissions.Commands.Handlers
             }
             
             var speakerIds = command.SpeakerIds.Select(id => new AggregateId(id));
-            var speakers = await _speakerRepository.BrowseAsync(speakerIds);
+            var speakers = (await _speakerRepository.BrowseAsync(speakerIds)).ToList();
 
-            if (speakers.Count() != command.SpeakerIds.Count())
+            if (speakers.Count != command.SpeakerIds.Count())
             {
                 throw new MissingSubmissionSpeakersException(command.Id);
             }

@@ -26,10 +26,10 @@ namespace Confab.Shared.Infrastructure.Modules
             {
                 throw new InvalidOperationException($"No action has been defined for path: '{path}'.");
             }
-
+            //NOTE: tlumaczenie typu do typu oczekiwanego przez modul docelowy (odbiorce requestu)
             var receiverRequest = TranslateType(request, registration.RequestType);
             var result = await registration.Action(receiverRequest);
-
+            //NOTE: tlumaczenie na TResult z modulu, ktory wywolal synchroniczne zapytanie
             return result is null ? null : TranslateType<TResult>(result);
         }
 

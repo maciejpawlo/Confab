@@ -12,9 +12,9 @@ namespace Confab.Modules.Agendas.Domain.Submissions.Entities
         public ConferenceId ConferenceId { get; private set; }
         public string  Title { get; private set; }
         public string  Description { get; private set; }
-        public int Level { get; private set; }
+        public int Level { get; private set; } //poziom zaawansowania kursu/zgloszenia
         public string Status { get; private set; }
-        public IEnumerable<string> Tags { get; private set; }
+        public IEnumerable<string> Tags { get; private set; } //keywordy zgloszenia, np czy to workshop, prezka etc
         public IEnumerable<Speaker> Speakers => _speakers;
 
         private ICollection<Speaker> _speakers;

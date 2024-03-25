@@ -8,6 +8,7 @@ namespace Confab.Shared.Infrastructure.Modules
     internal sealed class ModuleRegistry : IModuleRegistry
     {
         private readonly List<ModuleBroadcastRegistration> _broadcastRegistrations = new();
+        //NOTE: uzyto Dictionary, poniewaz dla jednej sciezki (endpointa) moze byc tylko jeden, unikalny odbiorca
         private readonly Dictionary<string, ModuleRequestRegistration> _requestRegistrations = new();
 
         public IEnumerable<ModuleBroadcastRegistration> GetBroadcastRegistrations(string key)

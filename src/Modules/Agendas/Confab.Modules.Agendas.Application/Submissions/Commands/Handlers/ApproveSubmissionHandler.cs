@@ -38,6 +38,8 @@ namespace Confab.Modules.Agendas.Application.Submissions.Commands.Handlers
             
             await _repository.UpdateAsync(submission);
             await _dispatcher.DispatchAsync(submission.Events.ToArray());
+            //TODO: przetestowac :)
+            //await _dispatcher.DispatchAsync1(submission.Events.ToArray());
             
             var integrationEvents = _eventMapper.MapAll(submission.Events);
             await _messageBroker.PublishAsync(integrationEvents.ToArray());

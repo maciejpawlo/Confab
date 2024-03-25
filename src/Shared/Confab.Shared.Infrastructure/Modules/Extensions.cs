@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Confab.Shared.Abstractions.Commands;
 using Confab.Shared.Abstractions.Events;
@@ -32,7 +33,9 @@ namespace Confab.Shared.Infrastructure.Modules
         internal static void MapModuleInfo(this IEndpointRouteBuilder endpoint)
         {
             endpoint.MapGet("modules", context =>
+
             {
+                //TODO: w .NET 6+ można użyć IOptions<T>
                 var moduleInfoProvider = context.RequestServices.GetRequiredService<ModuleInfoProvider>();
                 return context.Response.WriteAsJsonAsync(moduleInfoProvider.Modules);
             });
@@ -41,19 +44,22 @@ namespace Confab.Shared.Infrastructure.Modules
         internal static IHostBuilder ConfigureModules(this IHostBuilder builder)
             => builder.ConfigureAppConfiguration((ctx, cfg) =>
             {
-                foreach (var settings in GetSettings("*"))
+                //TODO: jestesmy w stanie zaladowac pliki konfiguracyjne dla >1 env
+                foreach (var settings in GetSettings("*", @"^module\\.(\\w+)\\.json$"))
                 {
                     cfg.AddJsonFile(settings);
                 }
 
-                foreach (var settings in GetSettings($"*.{ctx.HostingEnvironment.EnvironmentName}"))
+                foreach (var settings in GetSettings($"*.{ctx.HostingEnvironment.EnvironmentName}", 
+                             $@"^module\\.(\\w+)\\.{ctx.HostingEnvironment.EnvironmentName}.json$"))
                 {
                     cfg.AddJsonFile(settings);
                 }
 
-                IEnumerable<string> GetSettings(string pattern)
-                    => Directory.EnumerateFiles(ctx.HostingEnvironment.ContentRootPath,
+                IEnumerable<string> GetSettings(string pattern, string regexPattern)
+                    => Directory.GetFiles(ctx.HostingEnvironment.ContentRootPath,
                         $"module.{pattern}.json", SearchOption.AllDirectories);
+                        //.Where(x => Regex.IsMatch(x, regexPattern));
             });
         
         internal static IServiceCollection AddModuleRequests(this IServiceCollection services,
@@ -72,6 +78,7 @@ namespace Confab.Shared.Infrastructure.Modules
 
         private static void AddModuleRegistry(this IServiceCollection services, IEnumerable<Assembly> assemblies)
         {
+            //automatyczna rejestracja event/command handlerow
             var registry = new ModuleRegistry();
             var types = assemblies.SelectMany(x => x.GetTypes()).ToArray();
             
@@ -98,7 +105,8 @@ namespace Confab.Shared.Infrastructure.Modules
                             ?.MakeGenericMethod(type)
                             .Invoke(commandDispatcher, new[] {@event}));
                 }
-                
+                //iteraccja po typach i wywolanie generycznego handlera
+                //wywolanie event dispatchera
                 foreach (var type in eventTypes)
                 {
                     registry.AddBroadcastAction(type, @event =>

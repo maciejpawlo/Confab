@@ -94,7 +94,7 @@ Content-Type: application/json
 
 ###
 @createdConferenceId = {{create_conference.response.headers.Resource-ID}}
-
+@createdConferenceId = 69ae1f87-2238-4ebf-bac4-64ddbc97a897
 ### Start the tickets sale (`price` is nullable (free), as well as `amount` (no limit))
 POST {{ticketsApi}}/sales/conferences/{{createdConferenceId}}
 Authorization: Bearer {{accessTokenAdmin}}
@@ -110,7 +110,7 @@ Content-Type: application/json
 }
 
 ###
-@user1Email = user1@confab.io
+@user1Email = user2@confab.io
 @user1Password = secret
 
 ### Register as the regular user
@@ -196,7 +196,7 @@ Content-Type: application/json
 
 {
   "conferenceId": "{{createdConferenceId}}",
-  "title": "My submission",
+  "title": "My submission test1",
   "description": "Lorem ipsum",
   "level": 3,
   "tags": ["stationary", "dotnet"],
@@ -243,7 +243,7 @@ Content-Type: application/json
 
 ###
 @agendaSlotId = {{create_regular_agenda_slot.response.headers.Resource-ID}}
-
+@submissionId = 5f5cf39d-dee5-493b-ada9-cefa9d64d687
 ### Assign regular agenda slot
 PUT {{agendasApi}}/agendas/{{createdConferenceId}}/slots/regular
 Authorization: Bearer {{accessTokenAdmin}}
@@ -254,6 +254,7 @@ Content-Type: application/json
   "agendaSlotId": "{{agendaSlotId}}",
   "agendaItemId": "{{submissionId}}"
 }
+### 
 
 @eventId = 8ce62487-4ce9-4577-8c47-392a7d95da9e
 

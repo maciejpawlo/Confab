@@ -37,7 +37,7 @@ namespace Confab.Modules.Saga.InviteSpeaker
             {
                 Data.Email = email;
                 Data.FullName = fullName;
-
+                //NOTE: mozna strzelic http post, uzyc message brokera
                 await _moduleClient.SendAsync("speakers/create", new
                 {
                     Id = userId, Email = email, FullName = fullName, Bio = "Lorem Ipsum"
